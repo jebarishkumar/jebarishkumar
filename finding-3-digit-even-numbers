@@ -1,0 +1,42 @@
+class Solution {
+    public int[] findEvenNumbers(int[] digits) {
+       
+        int[] count = new int[10];
+        for (int d : digits) {
+            count[d]++;
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        
+        
+        for (int i = 100; i <= 998; i += 2) {
+            
+            int hundreds = i / 100;
+            int tens = (i / 10) % 10;
+            int units = i % 10;
+
+            
+            int[] numCount = new int[10];
+            numCount[hundreds]++;
+            numCount[tens]++;
+            numCount[units]++;
+
+            
+            boolean possible = true;
+            for (int d = 0; d <= 9; d++) {
+                if (numCount[d] > count[d]) {
+                    possible = false;
+                    break;
+                }
+            }
+
+            if (possible) {
+                result.add(i);
+            }
+        }
+
+        
+        return result.stream().mapToInt(Integer::intValue).toArray();
+    }
+}
