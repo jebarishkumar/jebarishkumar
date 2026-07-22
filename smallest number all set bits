@@ -1,0 +1,11 @@
+class Solution {
+    public int smallestNumber(int n) {
+        int x = 1;
+       
+        while (x < n) {
+            x <<= 1; 
+        }
+        // Subtract 1 to get a number with all bits set (e.g., 8 -> 7)
+        return x - 1;
+    }
+}
