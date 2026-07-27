@@ -1,0 +1,29 @@
+class Solution {
+    public int romanToInt(String s) {
+        // Map to store Roman numeral values
+        java.util.Map<Character, Integer> romanMap = new java.util.HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+
+        int total = 0;
+        int n = s.length();
+
+        for (int i = 0; i < n; i++) {
+            int currentValue = romanMap.get(s.charAt(i));
+            
+            // Check if there is a next value and if it's greater than the current
+            if (i + 1 < n && currentValue < romanMap.get(s.charAt(i + 1))) {
+                total -= currentValue;
+            } else {
+                total += currentValue;
+            }
+        }
+
+        return total;
+    }
+}
