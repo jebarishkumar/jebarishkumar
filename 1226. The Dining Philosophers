@@ -1,0 +1,47 @@
+import java.util.concurrent.Semaphore;
+
+class DiningPhilosophers {
+    // 5 forks represented by semaphores
+    private Semaphore[] forks = new Semaphore[5];
+    // Limit max philosophers eating at once to avoid deadlock
+    private Semaphore maxPhilosophers = new Semaphore(4);
+
+    public DiningPhilosophers() {
+        for (int i = 0; i < 5; i++) {
+            forks[i] = new Semaphore(1);
+        }
+    }
+
+    // philosopher: 0 to 4
+    public void wantsToEat(int philosopher,
+                           Runnable pickLeftFork,
+                           Runnable pickRightFork,
+                           Runnable eat,
+                           Runnable putLeftFork,
+                           Runnable putRightFork) throws InterruptedException {
+        
+        int leftFork = philosopher;
+        int rightFork = (philosopher + 1) % 5;
+
+        // Limit number of philosophers eating simultaneously
+        maxPhilosophers.acquire();
+
+        // Acquire forks
+        forks[leftFork].acquire();
+        forks[rightFork].acquire();
+
+        // Actions
+        pickLeftFork.run();
+        pickRightFork.run();
+        eat.run();
+        putRightFork.run();
+        putLeftFork.run();
+
+        // Release forks
+        forks[rightFork].release();
+        forks[leftFork].release();
+
+        // Allow another philosopher to eat
+        maxPhilosophers.release();
+    }
+}
